@@ -1,0 +1,202 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+
+    <title></title>
+   
+  </head>
+  <body class="d-flex flex-column h-100">
+    
+    <div class="container pt-4 pb-4">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+            <a class="navbar-brand" href="#">Edit {{model}}</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse" id="navbarsExample09">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../adminpanel/">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Help</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-md-0">
+                <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+                </form>
+            </div>
+        </nav>
+    </div>
+        
+    <main role="main" class="flex-shrink-0">
+        <div class="container">
+            {% if model == 'user' %}
+            <h1>Edit User</h1>
+            <form action="../edit/" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="hidden" name="model" value="user"/>
+                    <input type="hidden" name="id" value="{{data.id}}"/>
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" name="name" placeholder="Enter name" value="{{data.name}}">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" name="username" placeholder="Enter Username" value="{{data.username}}">
+                    
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" name="password" placeholder="Enter password" value="{{data.password}}">
+                </div>
+                <div class="form-group">
+                    <label for="type">Is Student ?</label>
+                    <input type="checkbox" name="type" value="{{data.type}}">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            {% endif %}
+
+            {% if model == 'course' %}
+            <h1>Edit Course</h1>
+            <form action="../edit/" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="hidden" name="model" value="course"/>
+                    <input type="hidden" name="id" value="{{data.id}}"/>
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" name="name" placeholder="Enter name" value="{{data.name}}">
+                    <label for="sequence">Sequence</label>
+                    <input type="number" class="form-control" name="sequence" placeholder="Enter sequence" value="{{data.sequence}}">
+                    
+                    <label for="score">Score</label>
+                    <input type="number" class="form-control" name="score" placeholder="Enter score" value="{{data.score}}">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            {% endif %}
+
+            {% if model == 'lesson' %}
+            <h1>Edit Lesson</h1>
+            <form action="../edit/" method="POST" id="form-lesson">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="hidden" name="model" value="lesson"/>
+                    <input type="hidden" name="id" value="{{data.id}}"/>
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" name="name" placeholder="Enter name" value="{{data.name}}">
+                    <label for="sequence">Sequence</label>
+                    <input type="number" class="form-control" name="sequence" placeholder="Enter sequence" value="{{data.sequence}}">
+                    <label for="score">Score</label>
+                    <input type="number" class="form-control" name="score" placeholder="Enter score" value="{{data.score}}">
+                    <label for="course_id">Course</label>
+                    <select class="form-control" name="course_id" form="form-lesson">
+                        {%for c in courses_list%}
+                        <option value="{{c.id}}">{{c.name}}</option>
+                        {%endfor%}
+                    </select>
+                    <label for="details">Details</label>
+                    <input type="text" class="form-control" name="details" placeholder="" value="{{data.details}}">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            {% endif %}
+
+            {% if model == 'question' %}
+            <h1>Edit Question</h1>
+            <form action="../edit/" method="POST" id="form-q">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="hidden" name="model" value="question"/>
+                    <input type="hidden" name="id" value="{{data.id}}"/>
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" name="name" placeholder="Enter name" value="{{data.name}}">
+                    <label for="score">Score</label>
+                    <input type="number" class="form-control" name="score" placeholder="Enter score" value="{{data.score}}">
+                    <label for="lesson_id">Lesson</label>
+                    <select class="form-control" name="lesson_id" form="form-q">
+                        {%for l in lesson_list%}
+                        <option value="{{l.id}}">{{l.name}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            {% endif %}
+
+            {% if model == 'response' %}
+            <h1>Edit Response</h1>
+            <form action="../edit/" method="POST" id="form-q">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="hidden" name="model" value="response"/>
+                    <input type="hidden" name="id" value="{{data.id}}"/>
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" name="name" placeholder="Enter name" value="{{data.name}}">
+                    <label for="question_id">Question</label>
+                    <select class="form-control" name="question_id" form="form-q">
+                        {%for q in question_list%}
+                        <option value="{{q.id}}">{{q.name}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="is_correct">Is correct answer ?</label>
+                    <input type="checkbox" name="is_correct" value="{{data.is_correct}}"/>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            {% endif %}
+
+            {% if model == 'assigned' %}
+            <h1>Assined Course</h1>
+            <form action="../edit/" method="POST" id="form-assigned">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="hidden" name="model" value="assigned"/>
+                    <input type="hidden" name="id" value="{{data.id}}"/>
+                    <label for="student_id">Student</label>
+                    <select class="form-control" name="student_id" form="form-assigned">
+                        {%for s in student_list%}
+                        <option value="{{s.id}}">{{s.name}}</option>
+                        {%endfor%}
+                    </select>
+                    <label for="course_id">Course</label>
+                    <select class="form-control" name="course_id" form="form-assigned">
+                        {%for cs in courses_list%}
+                        <option value="{{cs.id}}">{{cs.name}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            {% endif %}
+        </div>
+    </main>
+      
+    <footer class="footer mt-auto py-3">
+        <div class="container pb-5">
+            <hr>
+            <span class="text-muted">
+                    
+            </span>
+        </div>
+    </footer>
+
+    
+    <script src="{% static 'js/jquery-3.3.1.slim.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  </body>
+</html>
